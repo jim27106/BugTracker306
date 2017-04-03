@@ -1,0 +1,154 @@
+﻿@model IEnumerable<BugTracker306.Models.Project>
+@using BugTracker306.Helpers;
+@using Microsoft.AspNet.Identity; 
+@*2017 Revisions/ file is pIndex.cshtml which s/b cloned to PAll.cshtml and POnlyMy.cshtml
+       TBD change logic so pAll and pOnly my uses a flag ala tickets index.
+       TBD cobtroller needs to force it to all projects if user (admin) has no projects assigned
+       TBD controller needs to force it to ticket list if user submitter or developer has one (or fewer) projects assigned.
+ 3/28 JMz   cleaning up tiles. 
+        logic so project managers can view tickets on their projects
+        if a Proj has 0 tickets then tile is create instead of list.
+       3/23 Tyson Griffin  can have a div within a div that also is broken into 12 parts.
+       3/22 JMz    mock up with 1-6-4-1 for new projects and 1-4-6 chart-1 for projects with history
+       3/14 JMz    w/ JT.  issue with data tables not working.  used zzclass.  then put it back.  now it works.  don't know why.
+       3/12 JMz    removed extra brace
+        3/10 TBD   show how many users
+                   remove "Actions" - it is too helpful to users.
+                   clicking on users will lead to unassignment.
+                   put in two list boxes
+                   need a UI
+    * 3/9 JMz  Starting
+*@
+@{
+    ViewBag.Title = "Project List - BT306";
+    var prjH = new ProjectsHelper();
+}
+
+
+
+<div class="row">
+    </div>
+
+    <p>
+        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+        {
+            <br />
+            @Html.ActionLink("Create New Project", "pCreate");
+            <span> | </span>
+            if (ViewBag.APMAll == "ALL")
+            {
+                @Html.ActionLink("View Only My Projects", "pOnlyMy")
+            }
+            else if (ViewBag.APMAll == "OnlyMy")
+            {
+                @Html.ActionLink("View All Projects", "pAll") 
+            } // Note: the third value is OnlyALL if they have no projects.
+        }
+        else
+        {
+            <h2 class="BTs-head2" style="padding-bottom:20px; padding-left:100px">Your Projects</h2>
+        }
+    </p>
+    @*How does this MyDataTable work if there are no projects and not if there are projects?*@
+    <table id="pIndexDT" class="MyDataTable table table-responsive table-striped ">
+        <thead>
+            <tr class="BTs-tHead text-center"  @*unfortunately the cretins who decided TH should be left were thorough*@>
+                <th class="col-md-2 text-center">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th class="col-md-5 text-center">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th class="col-md-1 text-center">
+                    @Html.DisplayNameFor(model => model.Organization)
+                </th>
+                <th class="col-md-1 text-center">
+                    Scheduled Start
+                </th>
+                <th class="col-md-1  text-center">
+                    Scheduled End Date
+                </th>
+                <th class="col-md-1 BT-future  text-center"> User count</th>
+                <th class="col-md-1  text-center">Tickets </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="BTu-head6"   style="padding-top: 19px">
+                    <td class="BTu-head6">
+                        <div class="nolft  wide2-btn">
+                            <a href="~/Projects/pDetails/@item.Id">
+                                    <span>@Html.DisplayFor(modelItem => item.Name) </span>
+                                <span class="label label-default">details</span>
+                            </a>
+                        </div>                        
+                    </td>
+                    <td class="BTu-para">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Organization)
+                    </td>
+                    <td fail1-valign="middle">
+                        @*https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.71).aspx*@
+                        @Html.ValueFor(model => item.SchedBeginDt, "{0:MM/dd/yy}")
+                        (@Html.DisplayFor(model => item.SchedBeginDt.DayOfWeek))
+                    </td>
+                    <td>
+                        @Html.ValueFor(model => item.SchedEndDt, "{0:MM/dd/yy}")
+                        (@Html.DisplayFor(model => item.SchedEndDt.DayOfWeek))
+                    </td>
+                    <td class="BT-future">
+                        <div class="nolft">
+                            <a class="quick-btn wide1-btn" href="~/Projects/pAssign/@item.Id">
+                                <i class="fa fa-user fa-2x"></i>
+                                    @if (item.Users.Count() == 1)
+                                    {
+                                        <span>1 User</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.Users.Count() Users </span>
+                                    }
+                                <span class="label label-default">team</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+
+                        <div class="nolft  total-tickets">
+                            @if (prjH.CanCreateTicket(User.Identity.GetUserId(), item.Id))
+                            {
+                                if (00 < @item.Tickets.Count) /*328*/
+                                {
+                                    <a class="nolft quick-btn wide1-btn" href="~/Tickets/tIndex?ProjectId=@item.Id">
+                                        <i class="fa fa-ticket fa-2x"></i>
+                                        <span>@item.Tickets.Count() tickets</span>
+                                        <span class="label label-default">list</span>
+                                    </a>      }
+                                else
+                                {
+                                    <a class="nolft quick-btn wide1-btn" 
+                                       href="~/Tickets/tCreate?ProjectId=@item.Id">
+                                        <i class="fa fa-ticket fa-2x"></i>
+                                        <span>no tickets</span>
+                                        <span class="label label-default">create</span>
+                                    </a> 
+                                }
+
+                            }
+                            else
+                            {
+                                <p class="nolft show-1tile">
+                                    @*328*@
+                                    <i class="fa fa-ticket fa-2x"></i><br />
+                                    <span>@item.Tickets.Count() tickets</span>
+                                </p>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

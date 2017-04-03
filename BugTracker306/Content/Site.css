@@ -1,0 +1,127 @@
+﻿/*2017 revisions
+    3/17 Jmz moved styles back to layout.
+ 3/17 JMz   moved  in styles from layout.cshtml- FAIL
+ 3/17 moved body-content back to layout
+*/
+
+    /* There seem to be perverse interactions between this and layout and bootstrap.
+    I have no idea why layout takes precenence on background-color and bootstrap takes precideings on background-image.
+    Actually, my idea is that they are particullary hateful.
+body {
+background-image: url('../../images/Leafcutter_ants_transporting_leaves.jpg');
+background-color: #097054;
+    padding-top: 50px;
+    padding-bottom: 20px;
+
+*/
+}
+
+/* object reference not set  = something null */
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.long-input { max-width: 400px }
+
+        /*It is unclear to me if this needs to be in layout.cshtml or site.css*/
+        /* I should find two properties which I can set to test it. 
+            perhaps font-weight and oblique/italic.
+        */
+.paginate_button { padding-left: 0.4em; padding-right: 1px; font-family: 'Comic Sans MS'; font-size: 100% ;}
+.BTs-Link       { padding-left: 0.4em; padding-right: 1px; font-family: 'Comic Sans MS'; font-size: 100% ;}
+.dataTables_info { color:#097054; font-family: 'Comic Sans MS'; font-size: 100%;}
+table.dataTable thead .sorting_asc { background-image: url('../images/SortIcons/sort_asc.png'); no-repeat center right; }
+table.dataTable thead .sorting_desc { background-image: url('../images/SortIcons/sort_desc.png'); no-repeat center right;  }
+table.dataTable thead .sorting_asc_disabled { background: url('../images/SortIcons/sort_asc_disabled.png') no-repeat center right; }
+table.dataTable thead .sorting_desc_disabled { background: url('../images/SortIcons/sort_desc_disabled.png') no-repeat center right; }
+
+/* Trying to incorporate template.  These are additional features. 
+   This is not loaded after template so I doubt I can override thier stuff here. */
+.show-1tile,.act-1tile,.wide1-btn {  /*taken from quick-btn in BtspTmplMetis/Dist/main.css*/
+  background: #EEEEEE;
+  box-shadow: 0 0 0 1px #F8F8F8 inset, 0 0 0 1px #CCCCCC;
+  /* 328 move below color: #6599FF;  /*pastel Blue*/
+  display: inline-block;
+  height: 80px;
+  margin: 10px;
+  padding-top: 16px;
+  text-align: center;
+  text-decoration: none;
+  width: 90px;
+  position: relative;
+}
+.act-1tile {  color: #6599FF;  /*pastel Blue 328 moved here*/ }
+.show-1tile {color: black}
+.act-2tile,.wide2-btn {  /*taken from quick-btn in BtspTmplMetis/Dist/main.css*/
+  background: #EEEEEE;
+  box-shadow: 0 0 0 1px #F8F8F8 inset, 0 0 0 1px #CCCCCC;
+  color: #6599FF;  /*pastel Blue*/
+  display: inline-block;
+  height: 80px;
+  margin: 10px;
+  padding-top: 16px;
+  text-align: center;
+  text-decoration: none;
+  width: 190px;
+  position: relative;
+}
+
+.act-3tile,.wide3-btn {  /*taken from quick-btn in BtspTmplMetis/Dist/main.css*/
+  background: #EEEEEE;
+  box-shadow: 0 0 0 1px #F8F8F8 inset, 0 0 0 1px #CCCCCC;
+  color: #6599FF;  /*pastel Blue*/
+  display: inline-block;
+  height: 80px;
+  margin: 10px;
+  padding-top: 16px;
+  text-align: center;
+  text-decoration: none;
+  width: 290px;
+  position: relative;
+}
+.act-1tile span,.wide1-btn span, .wide2-btn span, .wide3-btn span {
+  display: block;
+}
+.show-1tile .label {display:none}
+.act-1tile .label,.wide1-btn .label,.wide2-btn .label, .wide3-btn .label {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+}
+.act-1tile:hover ,.act-2tile:hover, .wide2-btn:hover, .act-3tile:hover {
+  text-decoration: none;
+  color: white;
+  background-color: #4d7589;
+  }
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #00f9f9;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f9f900;
+}
+/* screwed.  This had no effect when I was trying to apply it to the quick-btn rather than label. */
+.label-una-pri {   color: orangered;    }
+.label-urg-pri {   color: rebeccapurple;    }
+.label-hig-pri {   color: red;    }
+.label-med-pri {   color: yellow;    }
+.label-low-pri {   color: antiquewhite;    }
+.label-tot-pri {   color: thistle;    }
+/* use text-whatever instead of my colors which it won't do for me. */

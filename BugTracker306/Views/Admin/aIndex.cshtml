@@ -1,0 +1,77 @@
+﻿@using BugTracker306.Models
+@using BugTracker306.Helpers
+@*2017 revisions
+TBD - show # of open tickets
+3/19 JMz    changing fonts.  put in  class="col-md-3" etc.
+3/10?/ JMz scaffolded
+    *@
+
+@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="BTs-head">User Administration</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create") | @Html.ActionLink("Assign", "aAssign")
+</p>
+<div>  @*It seemsDIV is needed for DataTables to work.*@
+     
+
+<table class="MyDataTable">
+    <tr>
+        <th class="col-md-4">
+            User
+        </th>
+        <th  class="col-md-2">
+           Roles
+        </th>
+        <th  class="col-md-1">
+            Actions
+        </th>
+        <th class="col-md-5" 
+            style="padding-left:10px; background-image: url('../../images/150223ants-OptiBarCproBiotics.jpg');"
+            rowspan="@Model.Count()">
+        </th>
+        @*<th  class="col-md-2">
+            Open Ticket Count
+        </th>*@
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.Raw(item.DisplayName) (@Html.Raw(item.Email))
+        </td>
+        <td> 
+            @{
+                var urh = new UserRolesHelper();
+                var roles = urh.ListUserRoleNames(item.Id).ToList();
+                string sSep = "";
+                foreach (var role in roles)
+                {
+                    <span >@sSep @role</span>
+                    sSep = "|";
+                }
+            }
+        </td>
+            <td>
+
+                @Html.ActionLink("Assign Roles", "ChangeRole", "Admin",
+                                new { Id = item.Id }, null /*new { @class = "btn-primary BT-button1" }*/) 
+        </td>
+        @*<td class="BT-future"> Show Tickets       </td>*@
+    </tr>
+}
+
+</table>
+    
+<cite class="BTs-para" style="padding-top:50; padding-bottom: 15">
+    Image above: Leaf cutter ants marching to nest
+    carrying sections of leaves.
+    From (http://www.optibacprobiotics.co.uk/blog/2013/09/leaf-cutter-ants-carry-friendly-bacteria).
+</cite>
+</div>

@@ -1,0 +1,145 @@
+﻿@model BugTracker306.Models.TicketAttachment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TicketAttachment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>            @Html.DisplayNameFor(model => model.ticket.Title)        </dt>
+              <dd>            @Html.DisplayFor(model => model.ticket.Title)        </dd>
+                <dt>            @Html.DisplayNameFor(model => model.User.DisplayName)        </dt>
+                <dd>            @Html.DisplayFor(model => model.User.DisplayName)        </dd>
+                <dt>            @Html.DisplayNameFor(model => model.FilePath)        </dt>
+                <dd>            @Html.DisplayFor(model => model.FilePath)        </dd>
+                <dt>            @Html.DisplayNameFor(model => model.FileURL)        </dt>
+                <dd>            @Html.DisplayFor(model => model.FileURL)        </dd>
+                <dt>            @Html.DisplayNameFor(model => model.Description)        </dt>
+                <dd>            @Html.DisplayFor(model => model.Description)        </dd>
+                <dt>           Create Date        </dt>
+                <dd>            @Html.DisplayFor(model => model.CreateDt)        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@*below is from View/BlogPost/Details
+
+<!-- TODO think this craps out if no id.  - need to trace back to the controller. -->
+<h2 class="JimH3">Post Details</h2>
+
+<div>
+    <!-- they broke align=top
+        wrappingtext in a paragraph per stackoverflow - FAIL
+        style="display:inline" - FAIL
+        -->
+    <div class="container wrap">
+        <div class="row">
+
+            @if (null != Model.MediaURL)
+            {
+                <img class="img-responsive blog-image" src="@Model.TicketAttachments" width="197" alt="" />
+            }
+
+            <span class="blog-title">@Html.DisplayFor(model => model.Title)</span>
+            by <span class="blog-author">  @Html.DisplayFor(model => model.Author.DisplayName) </span>
+            <span class="blog-body" style="vertical-align: baseline">  @Html.Raw(Model.Body)</span>
+
+        </div>
+    </div>
+</div>
+<br />
+<p>
+
+    @Html.ActionLink("Back to List", "Index", "Home", null, new { @class = "link-spacing" })
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "link-spacing" })
+        @Html.ActionLink("Delete This Post", "Delete", "BlogPosts"
+          , new { id = Model.Id }, new { @class = "link-spacing" })
+    }
+</p>
+<br />
+
+
+@if (0 == Model.TicketComments.Count && User.Identity.IsAuthenticated)
+{
+    <p> Be the first to comment: </p>
+}
+else if (1 == Model.TicketComments.Count && User.Identity.IsAuthenticated)
+{
+    <p> There is 1 comment.   Please add to the dialog. </p>
+}
+else if (User.Identity.IsAuthenticated)
+{
+    <p> There are @Model.TicketComments.Count comments.  Your voice is still welcome.</p>
+}
+else
+{
+    <p> There are @Model.TicketComments.Count comments.</p>
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    using (Html.BeginForm("Create", "TicketComments", FormMethod.Post))
+    {
+
+        // the names must correspend to properties of comments in the model
+        <input type="hidden" value="@Model.Id" name="PostId" />
+            <textarea id="BodyEditor" value="your feedback" name="body"></textarea>
+            <input type="hidden" value="@DateTime.Now" name="CreateDt" />
+            <input type="submit" class="btn btn-primary" value="Save Comment" />
+    }
+}
+@if (0 < Model.TicketComments.Count)
+{
+    <h2 class="JimH3"> Here is what other people are saying:</h2>
+}
+@foreach (var cmt in Model.TicketComments)
+{   // "modelItem" is just a place holder.
+    if (cmt.Moderated > 0 || User.IsInRole("Moderator") || User.IsInRole("Admin"))
+    {
+        <h5 class="comment-by-and-time">
+            @Html.DisplayFor(modelItem => cmt.Author.DisplayName) wrote on
+            @Html.DisplayFor(modelItem => cmt.Created)
+        </h5>
+        <p>
+            @Html.Raw(cmt.Body)
+        </p>
+
+        if (User.IsInRole("Moderator") | User.IsInRole("Admin"))
+        {
+            if (0 == 1 && cmt.Moderated <= 0)  // client wanted system to auto-publish.
+            {   @Html.ActionLink("Publish This Comment", "Publish", "Comments",
+                                new { id = cmt.Id }, new { @class = "link-spacing" }) }
+            if (cmt.Moderated >= 0)
+            {
+                @Html.ActionLink("Delete This Comment", "Delete", "Comments",
+                                new { id = cmt.Id }, new { @class = "link-spacing" }) }
+        }
+        if (User.Identity.GetUserId() == cmt.AuthorId)
+        {
+            @Html.ActionLink("Edit My Comment", "Edit", "Comments", new { id = cmt.Id }, new { @class = "link-spacing" })
+        }
+        else if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+        {
+            @Html.ActionLink("Edit", "Edit", "Comments", new { id = cmt.Id }, new { @class = "link-spacing" })
+        }
+
+        if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("Admin Details", "Details", "Comments", new { id = cmt.Id }, new { @class = "link-spacing" })
+        }
+    }
+}
+<br />
+<br />
+<p>
+    @Html.ActionLink("Back to List", "Index", "Home")
+*@

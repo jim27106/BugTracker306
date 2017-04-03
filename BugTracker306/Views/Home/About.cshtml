@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "About BT306";
+}
+@*2017 Revisions
+    3/19 Jmz    put in welcome logic
+    3/15 JMz    attributions.
+ 3/14 JMz   original about screen with some system description
+    
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>*@
+<br />
+<img style="float: right" src="~/images/800px-Leafcutter_ants_transporting_leaves.jpg" width="600"
+     alt="Bandwagonman's Leaf Cutter Ants"/>
+<h4 class="BTs-head4">BugTracker306</h4>
+@if ("newbie" == ViewBag.Welcome)
+{
+    <p class="BTs-para">Congratulations on choosing Bug Tracker 306.  The next step is to contact your administrator
+    about being put in the correct role (which controls which activities you perform), and project 
+    manager to get assigned to a project.  You can @*@ActionLink("*@create a ticket@*", "tCreate", "Ticket")*@
+    now, but it will need to be assigned to the correct project later.</p>
+}
+<p class="BTs-para">BugTracker306 is a portfolio application for tracking projects and tickets.</p>
+<p class="BTs-para">It is set up with various user roles and one's role determines 
+    what one can do.  A admin is in charge of assigning roles.  The project managers 
+    create projects.  Finally submitters create tickets within those projects.</p>
+<h4 class="BTs-head4">Scope Screep</h4>
+<p class="BTs-para">If I have time I would like to expand this system to be able to schedule.  Behind the scenes
+    there are fields for keeping track of the number of hours worked.</p>
+<h4 class="BTs-head4">Attributions</h4>
+<p> Leaf cutter Ants images by <a href="https://en.wikipedia.org/wiki/User:Bandwagonman" class="extiw" 
+      title="wikipedia:User:Bandwagonman">Bandwagonman</a> 
+at <a href="https://en.wikipedia.org/wiki/" 
+      class="extiw" 
+      title="wikipedia:">English Wikipedia</a>, 
+<a href="http://creativecommons.org/licenses/by-sa/3.0" 
+   title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, 
+<a href="https://commons.wikimedia.org/w/index.php?curid=3713687">Link</a>
+    </p>
+
+

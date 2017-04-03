@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+@*2017 Revisions
+    3/27 JMz    don't referece assets / xx/xx/xx folder to get css for Metis.
+    3/26 put in left nav pane from Metis no-right-...
+    3/25 h1,h2,h3,h4,h5,h6 background-color
+    3/25 to remove background image I had to stop debugging and then exclude from project.
+    (renaming, clearing cache, removling codee - all failed.
+    3/24 Metis from their no-rigt-no-left file
+    3/24 JMz    padding-left: 0px
+    3/22 JMz    Metis bootstrap stuff.
+    3/21 JMz favicon.  
+    3/20 JMz line ~75 A Anchor tag is styled 
+ 3/19 Big change on style dl dt and dl dd and also control-label something.
+ 3/16 Jmz   dropdown menus.  
+TBD dropdown menu fix.  It has a button look to it.  Darn.  It wraps.  darn.
+TBD green background or ants or something on nav bar.
+TBD links on menu in blue.
+    *@
+
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <!--IE Compatibility modes-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--Mobile first-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <link rel="icon" type="image/png" href="favicon.ico" sizes="32x32" />
+        <title>@ViewBag.Title - BT306</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @*https://datatables.net/forums/discussion/21158/missing-sort-arrows*@
+        <style rel="stylesheet" type="text/css" 
+               href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"></style>
+        @*<link href="~/BtspTmplMetis/dist/main-Metis.css" rel="stylesheet" />
+        <link href="~/BtspTmplMetis/dist/theme-Metis.css" rel="stylesheet" />
+        <link href="~/BtspTmplMetis/font-awesome.css" rel="stylesheet" />*@
+        @*<style> content/site.css datalist bundled input.*@
+
+        <meta name="description" 
+              content="A bug tracking / project management tool."
+              xxcontent="Free Admin Template Based On Twitter Bootstrap 3.x">
+        <meta name="author" content="JMartinez">
+
+        <meta name="msapplication-TileColor" content="#5bc0de" />
+        <meta name="msapplication-TileImage" content="assets/img/metis-tile.png" />
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="~/Content/bootstrap-Metis.css">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        @*<link rel="stylesheet" href="assets/lib/font-awesome/css/font-awesome.css"> - fails*@
+
+        <!-- Metis core stylesheet -->
+        <link rel="stylesheet" href="~/Content/main-Metis.css">
+
+        <!-- metisMenu stylesheet -->
+        <link rel="stylesheet" href="~/Content/metisMenu.css">
+
+        <!-- onoffcanvas stylesheet -->
+        <link rel="stylesheet" href="~/Content/onoffcanvas-Metis.css">
+
+        <!-- animate.css stylesheet -->
+        <link rel="stylesheet" href="~/Content/animate-Metis.css">
+<style>
+    h1,h2,h3,h4,h5,h6 {background-color: #eeeeee}
+
+    .tall200 { min-height: 200px}
+        .tall300 { min-height: 300px}
+        .nolft {padding-left: 0px}
+</style>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <!--For Development Only. Not required -->
+        <script>
+        less = {
+            env: "development",
+            relativeUrls: false,
+            rootpath: "/assets/"
+        };
+        </script>
+        <link rel="stylesheet" href="~/Content/style-switcher.css">
+        <link rel="stylesheet/less" type="text/css" href="~/Content/theme.less">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.1/less.js"></script>
+        <!--Modernizr / old school programmers would have said why this is needed. -->
+        <!-- Seems to be useless.  Why do these folks insist on downloading 400 Kbit? 
+            That would be 0.3 seconds on a reasonable connection.  -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+    </head>
+    <body style="background-image: url('../../images/Leafcutter_ants_transporting_leaves.jpg'); ">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle"
+                            data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Bug Tracker 306", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav BT-links">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="/Tickets/tIndex" style="display:none">
+                                <i class="fa fa-ticket fa-2x"></i>
+                            </a> </li>
+                            <li>@Html.ActionLink("Tickets", "tIndex", "Tickets")</li>
+                            <li><a href="/Projects/pIndex" style="display:none">
+                                <i class="fa fa-tasks fa-2x"></i>
+                            </a> </li>
+                            <li>@Html.ActionLink("Projects", "pIndex", "Projects")</li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a href="/Accounts/aIndex"   style="display:none"> wahhoa
+                                    <i class="fa fa-user fa-2x"></i>
+                                </a>
+                                @Html.ActionLink("Admin", "aIndex", "Admin")
+                            </li>
+                        }
+                    </ul>
+
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+        <div style="min-height:60px; color:lawngreen">The secret word is ... P I S T A C H I O</div>
+        <div class="row" style="background-color:white">
+
+                <div class="container body-content">
+                    @RenderBody()
+                    @*<script> document.write("<p class='BTs-head1 text-danger'>_Layout 138</p>"); </script>*@
+                    <hr />
+                    <footer>
+                        <div class="copy_right">
+                            <p class="BTs-para this-is-not-working">
+                                &copy; 2017 James Martinez. All Rights Reserved.
+                                @*| Layout Design by  <a href="http://w3layouts.com">W3Layouts</a>*@
+                            </p>
+                        </div>
+                    </footer>
+                </div>
+     
+        </div>
+
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
+
+        @*1) To include DataTables on your page simply include the following HTML:
+        CSS is above:     jquery.dataTables.min.css*@
+
+        <!-- jQuery
+    jquery.min.js   should have this above -->
+        <!-- DataTables-->
+        @*// https://datatables.net/forums/discussion/21158/missing-sort-arrows*@
+        @*<script> document.write("<p class='BTs-head1 text-danger'>_Layout 151</p>"); </script>*@
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+        <script>
+            $('#TicketComAndAtt').DataTable();
+            $('.MyDataTable').DataTable();
+            //$('#pIndexDT').DataTable();
+            //document.write("debug 313/317 loading         $('.MyDataTable').DataTable();");
+        </script>
+        @*<script> document.write("<p class='BTs-head1 text-danger'>_Layout 158</p>"); </script>*@
+    </body>
+
+</html>

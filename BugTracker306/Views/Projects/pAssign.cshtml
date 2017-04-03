@@ -1,0 +1,105 @@
+﻿@using BugTracker306.Helpers
+@model BugTracker306.Models.Project
+@* (c) 2017 J. Martinez.  All Rights Reserved
+     * 3/27 JMz work on ticket priority tiles.
+     * 3/10 JMz   starting
+                  put in two list boxes
+                  need a UI
+     * 3/10 cloned from pDetails.
+*@
+
+
+@{
+    ViewBag.Title = "Assignment of Users";
+    ProjectsHelper prjHlp;
+}
+
+<h2 class="BT-hide  BTs-head2">Assign members to the project team</h2>
+<br />
+<div class="row nolft">
+    <div class="col-md-3 " style="">
+        <div class="wide3-btn">
+            <span>@Model.Name</span> 
+            <label class="label label-default">details</label>
+        </div>
+    </div>
+    <div class="col-md-1"> </div>
+    <div class="col-md-5"> <br /> @Model.Description </div>
+    <div class="col-md-1"> </div>
+    <div class="col-md-1 nolft  total-tickets">
+        <a class="quick-btn wide1-btn" href="~/Tickets/tIndex/@Model.Id">
+            <i class="fa fa-ticket fa-2x"></i>
+            <span>@Model.Tickets.Count() tickets</span>
+            <span class="label label-default">total</span>
+        </a>
+    </div>
+    <div class="col-md-1 nolft urgent-tickets">
+        <a class="quick-btn wide1-btn" href="~/Tickets/tIndex?ProjectId=@Model.Id&Priority=Urgent">
+            <i class="fa fa-ticket fa-2x"></i>
+            <span>@ViewBag.PriUrgTix tickets</span>
+            <span class="label label-default label-urg-pri">urgent</span>
+        </a>
+    </div>
+</div>
+<div class="row" style="border: 3px 3px 3px 3px solid">
+   <div class="col-md-11">
+     <div>
+       <dl class="dl-horizontal">
+        <dt>            Begin Date        </dt>
+        <dd> @*https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.71).aspx*@
+           @Html.ValueFor(model => model.SchedBeginDt, "{0:MM/dd/yy}")
+        </dd>
+        <dt>            End Date        </dt>
+        <dd>@Html.ValueFor(model => model.SchedEndDt, "{0:MM/dd/yy}") </dd>
+        <dt> Users  </dt>
+        <dd> @ViewBag.UserCount </dd>
+       </dl>
+     </div>
+<div>
+@using (Html.BeginForm("pAssign", "Projects", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-1"> </div>
+               <div class="col-md-4">
+            @Html.ListBox("UserId310u", null, new { @size = "12" });
+        </div>
+  
+            <div class="col-md-3">
+                <div style="min-height:1em" id="VerticalAllignAttempt4"></div>
+                <input type="submit" class="btn btn-primary"
+                       value="Change User Assignments"
+                       Fail2style="vertical-align: middle" />
+            </div>
+            <div class="col-md-5">
+            </div>
+        </div>
+}
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "pEdit", new { id = Model.Id , ViewMode = ViewBag.AllOrOnlyMy}) |
+    @Html.ActionLink("Back to List", "pIndex", new {  ViewMode = ViewBag.AllOrOnlyMy } )
+</p>
+</div>
+
+    <div class="col-md-1 nolft">
+        <a class="quick-btn wide1-btn btn-muted" href="~/Tickets/tIndex?ProjectId=@Model.Id&Priority=High">
+            <i class="fa fa-bolt fa-2x"></i>
+            <span>@ViewBag.PriHighTix tickets</span>
+    @*JasonQ - this gets an error <span>@prjHlp.PriHighTix(@Model.Id,"High") tickets</span>*@
+            <span class="label label-default label-hig-pri">high</span>
+        </a>
+        <a class="quick-btn wide1-btn" href="~/Tickets/tIndex?ProjectId=@Model.Id&Priority=Medium">
+            <i class="fa fa-bolt fa-2x"></i>
+            <span>@ViewBag.PriMedTix tickets</span>
+            <span class="label label-default label-med-pri">medium</span>
+        </a>
+        <a class="quick-btn wide1-btn" href="~/Tickets/tIndex?ProjectId=@Model.Id&Priority=Low">
+            <i class="fa fa-bolt fa-2x"></i>
+            <span>@ViewBag.PriLowTix tickets</span>
+            <span class="label label-default label-low-pri">low</span>
+        </a>
+    </div>
+
+   </div>

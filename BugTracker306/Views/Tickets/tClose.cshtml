@@ -1,0 +1,181 @@
+﻿@model BugTracker306.Models.Ticket
+@*2017 Revision History
+ 3/22 rename this as close.  
+    TBD Give users choices as to why it is closed.
+        (any status in status group "closed")
+    3/13 JMz   Scaffolded tDelete.cshtml
+*@
+@{
+    ViewBag.Title = "Close";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to close this ticket?</h3>
+<div>
+    <h4>Ticket</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Developer.DisplayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Developer.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Priority.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Priority.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Proj.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Proj.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Severity.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Severity.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sprint.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sprint.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status.StsName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status.StsName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Submitter.DisplayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Submitter.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Type.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdateDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstRemaining)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstRemaining)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ElapsedHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ElapsedHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.iTktsThatNeedThisDone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.iTktsThatNeedThisDone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.iTktsHoldingUpThisTkt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.iTktsHoldingUpThisTkt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sTktsThatNeedThisDone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sTktsThatNeedThisDone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sTktsHoldingUpThisTkt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sTktsHoldingUpThisTkt)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "tIndex")
+        </div>
+    }
+</div>

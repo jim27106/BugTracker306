@@ -1,0 +1,166 @@
+﻿@model IEnumerable<BugTracker306.Models.Ticket>
+@using Microsoft.AspNet.Identity; 
+@using BugTracker306.Helpers;
+@*2017 Revisions
+    TBD I get a column if I move assign into the developer column and 
+    clicking on the ticket title gets you detais.
+ TBD  It would be nice if this showed developer id to submitters and submitter name to developers
+ TBD    A project manager would like to see both. 
+    3/28 JMz    cleaning up tile logic
+ 3/14 JMz   Original edits
+ 3/13 JMz   Scaffolded
+    *@
+@{
+    ViewBag.Title = "Ticket List - BT306";
+}
+<div class="row BTs-not-sized">
+<div class="col-md-4">
+    <h2 class="BTs-head2">List of tickets</h2>
+</div>
+<div class="col-md-4"  style="font-size:150%; padding-top:15px;">
+@if (User.IsInRole("Submitter"))
+{
+    <span class="BTs-Link"> @Html.ActionLink("Create New Ticket", "tCreate")                </span>
+}
+
+@if (User.IsInRole("Developer"))
+{
+    //Todo: High - if viewing a project's tickets should show both.
+    if (ViewBag.DevAll == "ALL")
+    {
+        @Html.ActionLink("View Only My Tickets", "tOnlyMy") // , "Tickets" , new { @class = "BTs-link" })
+    }
+    else
+    {
+        @Html.ActionLink("View All Tickets", "tAll") // , "Tickets", new { @class = "BTs-link" })
+    }
+}
+</div>
+    <div class="col-md-4 BTs-para" > 
+        @*330JMz @if ("" == ViewBag.Message)
+        {
+            @ViewBag.Message = "To comment on a ticket or attach a document click on details.";
+        }
+        else
+        {
+            <script>$('#div44').addClass = "text-danger";</script>
+        }*@
+        <div id="div44" style="font-size:150%; padding-top:15px;">
+        @ViewBag.Warning @ViewBag.Message </div>
+</div>
+</div>
+<table class="table MyDataTable table-striped BTu-para">
+    @*"striping seems to be through ootstrap.css around line 1499"*@
+    <thead>@*for DataTables (jQuery addon)*@
+    <tr class="BTs-para">
+        <th>            Project        </th>
+               <th> Title           </th>
+        <th> Description </th>
+        <th> Summiter       </th> 
+        <th> Type             </th>
+    <th>            Priority        </th>
+        <th>           Status          </th>
+        <th> Developer        </th>
+
+    </tr>
+    </thead>@*for DataTables (jQuery addon)*@
+
+    @{
+        var prjH = new ProjectsHelper();
+        string AssignPower;
+        string AssignAPtag;
+    }
+    <tbody> @*for DataTables (jQuery addon)*@
+@foreach (var item in Model) {
+    <tr>
+        <td>            @Html.DisplayFor(modelItem => item.Proj.Name)        </td>
+        <td>     
+            <div class="nolft">
+                <a class="wide2-btn " href="~/Tickets/tDetails/@item.Id">
+                    @*<i class="fa fa-bolt fa-2x"></i>*@
+                    <span>@Html.DisplayFor(modelItem => item.Title) </span>
+                    <span class="label label-default">details</span>
+                </a>
+            </div>      
+         </td>
+         <td>            @Html.DisplayFor(modelItem => item.Description)        </td>
+        <td>            @Html.DisplayFor(modelItem => item.Submitter.DisplayName)        </td>
+
+        <td>            @Html.DisplayFor(modelItem => item.Type.Name)        </td>
+        
+                 <td> 
+                        @if (User.IsInRole("Admin")
+                        || (User.IsInRole("Project Manager")
+                            && prjH.IsUserOnProject(User.Identity.GetUserId(), item.ProjId))
+                        || (User.IsInRole("Developer") && item.DeveloperId == User.Identity.GetUserId())
+                        || (User.IsInRole("Submitter") && item.SubmitterId == User.Identity.GetUserId())
+                        )
+{ 
+    <a class="act-1tile" href="~/Tickets/tEdit/@item.Id">
+        <span>@Html.DisplayFor(modelItem => item.Priority.Name) </span>
+        <span class="label label-default">edit</span>
+    </a>
+}
+else
+{
+    <span>@Html.DisplayFor(modelItem => item.Priority.Name) </span>
+}
+
+</td>
+
+        <td> 
+            <div class="nolft">
+                @if (User.IsInRole("Developer") || User.IsInRole(BTCon.PJM))
+                {
+                    <a class="act-1tile" href="~/Tickets/tClose/@item.Id">
+                        <span>@Html.DisplayFor(modelItem => item.Status.StsName) </span>
+                        <span class="label label-default">close</span>
+                    </a>
+                }
+                else
+                {
+                    <p class="show-1tile" href="~/Tickets/tClose/@item.Id">
+                    <span>@Html.DisplayFor(modelItem => item.Status.StsName) </span>
+                    <span class="label label-default">close</span>
+                    </p>
+                }
+            </div>    
+        </td>
+        @if (User.IsInRole("Admin")
+                        || (User.IsInRole("Project Manager")
+                            && prjH.IsUserOnProject(User.Identity.GetUserId(), item.ProjId)))
+        {
+            AssignPower = "act-1tile";
+            AssignAPtag = "a";
+        }
+        else
+        {
+            AssignPower = "show-1tile";
+            AssignAPtag = "p";
+        }
+        <td> 
+            <div class="nolft">
+            @if ("p" == AssignAPtag)
+            {
+                <p class="@AssignPower" >
+                    <span>@Html.DisplayFor(modelItem => item.Developer.DisplayName) </span>
+                    <span class="label label-default">assign</span>
+                </p>
+
+            }
+            else
+            {
+                <a class="@AssignPower" href="~/Tickets/tAssign/@item.Id">
+                    <span>@Html.DisplayFor(modelItem => item.Developer.DisplayName) </span>
+                    <span class="label label-default">assign</span>
+                </a>
+                    }
+            </div>
+        </td>
+  
+</tr>
+}
+</tbody> @*for DataTables (jQuery addon)*@
+</table>
+
+@*<script> document.write("<p class='BTs-head1 text-danger'>tIndex 107</p>"); </script>*@

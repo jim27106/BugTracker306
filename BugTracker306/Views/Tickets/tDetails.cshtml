@@ -1,0 +1,163 @@
+﻿@model BugTracker306.Models.Ticket
+@*2017 Revision History
+    3/27 putting in tiles; changing order of columns.
+    TBD show comments and attachments intermingled in chronological order
+    TBD give abilility to do reverse chron order
+    TBD #anchor for jump to attachments, jump to comments
+     // need logic for if not accptable to their browse - XMS , PDF
+                // debug this ... List<string> abc[] = Request.AcceptTypes();
+                // If I knew what I was doing it could open a modal.
+    3/19 JMz    minor changes here.  Big change on style dl dt and dl dd in _layout.cshtml
+    3/13 JMz   Scaffolded tDetails.cshtml
+*@
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div>
+<h2 class="BTs-head2">Ticket Details</h2>
+    @*<h4>Ticket</h4>*@
+    <hr />
+    <dl class="dl-horizontal ">
+        <dt>  Project Name  </dt>
+        <dd>            @Html.DisplayFor(model => model.Proj.Name)        </dd>
+        <dt>Title        </dt>
+        <dd>            @Html.DisplayFor(model => model.Title)        </dd>
+        <dt>     Description        </dt>
+        <dd>            @Html.DisplayFor(model => model.Description)        </dd>
+                <dt>  Submitter       </dt>
+        <dd>           @Html.DisplayFor(model => model.Submitter.DisplayName)        </dd>
+               <dt>          Developer       </dt>        
+        <dd>            @Html.DisplayFor(model => model.Developer.DisplayName)        </dd>
+        <dt>  Priority:      </dt>
+                <dd>            @Html.DisplayFor(model => model.Priority.Name)        </dd>
+
+                <dt>     Status:       </dt>
+                <dd>            @Html.DisplayFor(model => model.Status.StsName)        </dd>
+                <dt> Type        </dt>
+                <dd>            @Html.DisplayFor(model => model.Type.Name)        </dd>
+
+                <dt>    Create Date       </dt>
+                <dd>  @Html.Raw(Model.CreateDt.ToLocalTime().ToString());       </dd>
+                <dt>Update Date        </dt>
+                <dd>            @Html.DisplayFor(model => model.UpdateDt)        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "tEdit", new { id = Model.Id }) | 
+    @if (Model.Histories.Count() > 0)
+    {
+        @Html.ActionLink("History", "ThIndex", "TicketHistories", new { id = Model.Id }, null) <br />
+    }
+    @Html.ActionLink("Back to List", "tIndex")
+</p>
+
+@if (0 == Model.Comments.Count)
+{
+    <p> There are NO comments. </p>
+}
+else if (1 == Model.Comments.Count)
+{
+    <p> There is 1 comment.   </p>
+}
+else
+{
+    <p> There are @Model.Comments.Count comments.</p>
+}
+
+@if (User.Identity.IsAuthenticated)
+{   /*// cCreate Action in Comments Controller*/
+    using (Html.BeginForm("tcCreate", "TicketComments", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        //the names must correspend to properties of comments in the model
+        <input type="hidden" value="@Model.Id" name="TicketId" />
+        @Html.Label("Comment", new { @class= "col-md-2" })
+        @Html.TextArea("Verbiage", new { @class = "col-md-7" })
+        <p class="col-md-1">&nbsp;</p>
+        <input type="submit" class="col-md-2 btn btn-primary" value="Add Comment" />
+    }
+    <div class="clearfix"></div>
+
+    if (0 == Model.Attachments.Count)
+    {
+        <p> There are NO attachments. </p>
+    }
+    else if (1 == Model.Attachments.Count)
+    {
+        <p> There is 1 attachment.   </p>
+    }
+    else
+    {
+        <p> There are @Model.Comments.Count attachments.</p>
+    }
+
+    using (Html.BeginForm("TaCreate", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()   // needs to be matched on controller.  228JT
+        <input type="hidden" value="@Model.Id" name="TicketId" />
+        @Html.Label("Attachment", new { @class = "col-md-2" })
+        <input name="image" type="file" class="col-md-7 form-control" id="fileUpload" />
+        <p class="col-md-1">&nbsp;</p>
+         <input type="submit" value="Add Attachment" class="col-md-2 btn btn-primary " />
+    } // end from BlogPost/create.cshmtl.
+} @*user authenticated*@
+<div class="clearfix"></div>
+
+@if (Model.Comments.Count() + Model.Attachments.Count() > 0)
+{ 
+<div style="padding-top:1em;"> 
+<table class="MyDataTables border-outline" style="border: 5px solid red; ">
+    <thead>
+        <tr>
+                <th class="BTs-head4" width="10%">type of note</th>
+                <th class="BTs-para"  width="18%">Create Date</th>
+                <th class="BTs-para"  width="15%"> Author</th>
+                <th class="BTs-para"  width="42%"> Content </th>
+                <th class="BTs-para"   width="2%" xxrowspan="100"> &nbsp; </th>
+                <th class="BTs-para"  width="13%"> </th>            
+        </tr>
+    </thead>
+    <tbody>
+
+@foreach (var cmt in Model.Comments.Reverse()  )
+{   
+    <tr>
+        <td> comment </td>
+        <td> @Html.DisplayFor(modelItem => cmt.CreateDt) </td>
+        <td> @Html.DisplayFor(modelItem => cmt.User.DisplayName) </td>
+        <td colspan="2"> @Html.Raw(cmt.Verbiage)  </td>
+     </tr>
+}
+
+@foreach (var attachment in Model.Attachments.Reverse())
+{
+    <tr> 
+        <td> attachment</td>
+        <td> @attachment.CreateDt</td>
+        <td>  @Html.DisplayFor(model => @attachment.User.DisplayName) </td>
+        <td>@Html.DisplayFor(model => @attachment.FileURL)</td>
+        <td>
+            @if (null != attachment.FileURL)
+            {  
+                <a href="@attachment.FileURL"> click here  </a>
+            }   
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+    </div>
+}
+
+    <p>
+        @Html.ActionLink("Back to List", "tIndex", "Tickets")
+    </p>
+
+    <!-- This allows for the rich html environment for new comments -->
+    @section scripts{
+        <script>
+            document.writeln("test");
+        </script>
+    }

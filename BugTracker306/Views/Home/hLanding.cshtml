@@ -1,0 +1,42 @@
+﻿@model IEnumerable < BugTracker306.Models.Project >
+@*2017 revisions
+ * 3/22 JMz second attempt at a landing page
+ *@    
+
+@{
+    ViewBag.Title = "Landing Page - BT306";
+}
+
+<div class="jumbotron row BTs-not-sized" 
+     style="background:url('~/images/150223ants-OptiBarCproBiotics.jpg')">
+<h1>Bug Tracker 306</h1>
+    <p class="lead">Bug Tracker 306  </p>
+</div>
+
+<div class="row BTs-not-sized">
+    <div class="col-md-8 col-md-offset-2">
+        <h2>Projects</h2>
+        <div class="text-center">
+        <a class="quick-btn" href="~/Tickets/tIndex/80"><i class="fa fa-bolt fa-2x"></i>
+            <span>2 tickets</span>
+            <span class="label label-default">urgent</span></a></div>
+@*@@foreach (var item in Model)
+{*@
+    
+    <div class="col-md-12">
+        <h2>Tickets</h2>
+        Then one has submitters.  Submitters are the people
+        who turn a critical eye to the work.  When they notice something amiss they open a
+        ticket.  Tickets are normally a piece of work that can be completed in an afternoon, a day,
+        or perhaps a week.  In programming submitters are people who test the code and it is
+        the developers who correct the defect.  Once the defect has been corrected it is
+        marked as resolved.
+        </div>
+    <div class="col-md-4">
+        <h2>Projects</h2>
+        <p>Projects can be large or small.  However it makes the most sense to have a project
+        be a group of 3-15 people working towards a common goal.  For larger-scale operations
+        one should create two or more projects in Bug Tracker 306 so things stay in control
+        for the managers, submitters, and developers.</p>
+    </div>
+</div>

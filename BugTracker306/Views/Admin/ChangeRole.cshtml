@@ -1,0 +1,22 @@
+﻿@model BugTracker306.Models.ApplicationUser
+2017 Revision History
+ 3/09 JMz   Code with select list.
+@{
+    ViewBag.Title = "ChangeRole";
+}
+
+<h2 class="BT-head">Changing Roles for @Model.Email</h2>
+<h4 class="BT-head">@Model.DisplayName</h4>
+
+@using (Html.BeginForm("ChangeRole", "Admin", FormMethod.Post))
+{
+    @Html.ListBox("PostId309a", null)
+    // the names must correspend to properties of comments in the model
+    <input type="hidden" value="@Model.Id" name="Id" />
+
+    <input type="submit" class="btn btn-primary" value="Change Roles" />
+}
+
+
+
+

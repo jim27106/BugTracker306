@@ -1,0 +1,97 @@
+﻿@model IEnumerable<BugTracker306.Models.Project>
+@*2017 Revisions/ file is pIndex.cshtml which s/b cloned to PAll.cshtml and POnlyMy.cshtml
+    3/12 JMz    removed extra brace
+     3/10 TBD   show how many users
+                remove "Actions" - it is too helpful to users.
+                clicking on users will lead to unassignment.
+                put in two list boxes
+                need a UI
+    // 3/9 JMz  Starting
+*@
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="BTs-head2">Index</h2>
+
+<p>
+    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+    {
+        @Html.ActionLink("Create New Project", "pCreate");
+        <span> | </span>
+        if (ViewBag.AdminAll == "ALL")
+        {
+        @Html.ActionLink("View Only My Projects", "pOnlyMy")  @*, new { AdminAll = 1 }, null)*@
+        }
+        else
+        {
+            @Html.ActionLink("View All Projects", "pAll")
+        }
+    }
+</p>
+<table class="MyDataTable table table-responsive table-striped ">
+    <thead>
+        <tr class="BTs-tHead">
+            <th class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th class="col-md-5">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th class="col-md-1">
+                @Html.DisplayNameFor(model => model.Organization)
+            </th>
+            <th class="col-md-1">
+                Scheduled Begin Date
+            </th>
+            <th class="col-md-1">
+                Scheduled End Date
+            </th>
+            <th  class="col-md-1 BT-future"> User count</th>
+            <th class="col-md-1">Actions</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+    <tr class="BTu-head6">
+        <td class="BTu-head6">
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td class="BTu-para">
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Organization)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SchedBeginDt.Month)/@Html.DisplayFor(modelItem => item.SchedBeginDt.Day)/@Html.DisplayFor(modelItem => item.SchedBeginDt.Year)  
+                  
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SchedEndDt.DayOfWeek)
+        </td>
+        <td class="BT-future">
+            @item.Users.Count() 
+            @if (item.Users.Count() == 1)
+            {
+                <span>User</span>
+            }
+            else
+            {
+                <span>Users </span>
+            }
+            @*4 Submitters <br /> 2 Developers <br /> 0 Project Leaders*@
+        </td>
+               <td>
+            @Html.ActionLink("Assign Users", "pAssign", new { id = item.Id }) <br />
+            @Html.ActionLink("Edit", "pEdit", new { id = item.Id }) <br />
+            @Html.ActionLink("Details", "pDetails", new { id = item.Id }) 
+        </td>
+
+    </tr>
+}
+
+ </tbody>
+</table>

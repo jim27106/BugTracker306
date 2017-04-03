@@ -1,0 +1,62 @@
+﻿@model BugTracker306.Models.EmailModel
+@{
+    ViewBag.Title = "Contact";
+}
+<h2>@ViewBag.Title</h2>
+
+<!-- h2 class="msft-template">@ViewBag.Title.</h2 -->
+<h3 class="BT-head">@ViewBag.Message</h3>
+
+
+@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.FromName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.FromName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FromName)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.FromEmail, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.FromEmail, new
+    {
+        @class = "form-control",
+        placeholder = "example@email.com"
+    })
+                @Html.ValidationMessageFor(m => m.FromEmail)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-primary" value="Send" />
+            </div>
+        </div>
+    }
+
+<address>
+    James Martinez<br />
+    Kernersville, NC<br />
+    <abbr title="Phone">P:</abbr>
+    (01) 336-233-8537
+</address>
+
+<address>
+    Support:  <strong>
+        <a href="mailto:Blog-NOUCE.Contact.Jim27106@dfgh.net?Subject=Blog%20Contact">
+            Blog17.Contact.Jim27106 -at- dfgh -dot- net
+        </a>
+    </strong><br />
+</address>
+<p>
+    That is certainly an odd eMail address.  However, I will get the messages through
+    <a href="http://spamGourmet.com"> Spam Gourmet</a> unless the spammers figure
+    out how to harvest it and cause a complete melt down.  I should also note I've
+    been using dfgh for 15 years and that is older than my
+    current Internet Access Provider (IAP) account.  I should consider the
+    name-drop J.M -at- alum -dot- MIT -dot- edu.
+</p>
